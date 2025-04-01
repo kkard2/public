@@ -1,0 +1,12 @@
+{
+  "name": "server-info",
+  "version": "__VERSION__",
+  "description": "A simple Express server to show system information",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
