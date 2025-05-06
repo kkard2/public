@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pogoda</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Wybierz lokalizację</h1>
+    <form id="weatherForm">
+        <label>Kraj:
+            <select id="country">
+                <option value="Poland">Poland</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="Spain">Spain</option>
+                <option value="Italy">Italy</option>
+                <option value="United_Kingdom">United Kingdom</option>
+                <option value="United_States">United States</option>
+                <option value="Canada">Canada</option>
+            </select>
+        </label>
+        <label>Miasto:
+            <select id="city"></select>
+        </label>
+        <button type="submit">Pokaż pogodę</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+    const countryToCities = {
+        Poland: ['Warsaw', 'Krakow', 'Lublin', 'Wroclaw', 'Gdansk'],
+        Germany: ['Berlin', 'Munich', 'Hamburg', 'Cologne', 'Frankfurt'],
+        France: ['Paris', 'Lyon', 'Marseille', 'Nice', 'Toulouse'],
+        Spain: ['Madrid', 'Barcelona', 'Valencia', 'Seville', 'Bilbao'],
+        Italy: ['Rome', 'Milan', 'Naples', 'Turin', 'Florence'],
+        United_Kingdom: ['London', 'Manchester', 'Birmingham', 'Glasgow', 'Liverpool'],
+        United_States: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+        Canada: ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa']
+    };
+
+    const countrySelect = document.getElementById('country');
+    const citySelect = document.getElementById('city');
+
+    function populateCities(country) {
+        citySelect.innerHTML = '';
+        countryToCities[country].forEach(city => {
+            const opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+        });
+    }
+
+    countrySelect.addEventListener('change', () => {
+        populateCities(countrySelect.value);
+    });
+
+    populateCities(countrySelect.value);
+
+    document.getElementById('weatherForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const country = countrySelect.value;
+        const city = citySelect.value;
+        const res = await fetch(`/api/weather?country=${country}&city=${city}`);
+        const data = await res.json();
+
+        const weather = data.current;
+        const location = data.location;
+
+        document.getElementById('result').innerHTML = `
+            <h2>${location.name}, ${location.country}</h2>
+            <p>${weather.condition.text}</p>
+            <img src="${weather.condition.icon}" alt="${weather.condition.text}">
+            <ul>
+                <li>Temperatura: ${weather.temp_c}°C</li>
+                <li>Odczuwalna: ${weather.feelslike_c}°C</li>
+                <li>Wilgotność: ${weather.humidity}%</li>
+                <li>Ciśnienie: ${weather.pressure_mb} hPa</li>
+                <li>Wiatr: ${weather.wind_kph} km/h (${weather.wind_dir})</li>
+                <li>Widoczność: ${weather.vis_km} km</li>
+                <li>UV: ${weather.uv}</li>
+            </ul>
+        `;
+    });
+    </script>
+</body>
+</html>

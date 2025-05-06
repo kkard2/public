@@ -1,0 +1,21 @@
+{
+  "name": "zad1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env index.js",
+    "dev": "nodemon --env-file=.env index.js"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "express": "^5.1.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "author": "kkard2",
+  "license": "MIT"
+}
