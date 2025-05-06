@@ -10,14 +10,14 @@ Plik `Dockerfile` dostępny w bieżącym folderze
 
 ### a) Zbudowanie obrazu kontenera
 ```
-docker build --build-arg WEATHER_API_KEY=<API-KEY> -t weather-app .
+docker build -t weather-app .
 ```
-Klucz należy zdobyć zakładająć konto na [weatherapi.com](https://www.weatherapi.com/).
 
 ### b) Uruchomienie kontenera
 ```
-docker run -d -p 3000:3000 weather-app
+docker run -d -p 3000:3000 -e WEATHER_API_KEY=<API-KEY> weather-app
 ```
+Klucz należy zdobyć zakładająć konto na [weatherapi.com](https://www.weatherapi.com/).
 
 ### c) Uzyskanie informacji wygenerowanych przez serwer
 ```
@@ -33,3 +33,7 @@ docker history weather-app | tail -n +2 | wc -l
 ## Działanie aplikacji
 ![screenshot działającej aplikacji pogodowej w przeglądarce pod adresem localhost:3000](res/ss01.png)
 ![screenshot z uruchomienia zbudowanego obrazu](res/ss02.png)
+
+## Obraz
+
+Obraz znajduje się pod adresem [https://hub.docker.com/r/kkard2/weather-app](https://hub.docker.com/r/kkard2/weather-app)
