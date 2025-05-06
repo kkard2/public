@@ -21,10 +21,7 @@ RUN mkdir -p logs
 
 EXPOSE 3000
 
-ARG WEATHER_API_KEY
-RUN echo "WEATHER_API_KEY=${WEATHER_API_KEY}" > .env
-
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD curl --silent --fail http://localhost:3000/ || exit 1
+  CMD curl --silent --fail "http://localhost:3000/api/weather?country=Poland&city=Warsaw" || exit 1
 
 CMD ["npm", "start"]

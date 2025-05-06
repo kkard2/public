@@ -62,26 +62,35 @@
         e.preventDefault();
         const country = countrySelect.value;
         const city = citySelect.value;
-        const res = await fetch(`/api/weather?country=${country}&city=${city}`);
-        const data = await res.json();
 
-        const weather = data.current;
-        const location = data.location;
+        try {
+            const res = await fetch(`/api/weather?country=${country}&city=${city}`);
 
-        document.getElementById('result').innerHTML = `
-            <h2>${location.name}, ${location.country}</h2>
-            <p>${weather.condition.text}</p>
-            <img src="${weather.condition.icon}" alt="${weather.condition.text}">
-            <ul>
-                <li>Temperatura: ${weather.temp_c}°C</li>
-                <li>Odczuwalna: ${weather.feelslike_c}°C</li>
-                <li>Wilgotność: ${weather.humidity}%</li>
-                <li>Ciśnienie: ${weather.pressure_mb} hPa</li>
-                <li>Wiatr: ${weather.wind_kph} km/h (${weather.wind_dir})</li>
-                <li>Widoczność: ${weather.vis_km} km</li>
-                <li>UV: ${weather.uv}</li>
-            </ul>
-        `;
+            if (!res.ok) {
+                throw new Error(`Failed to fetch weather data: ${res.statusText}`);
+            }
+
+            const data = await res.json();
+            const weather = data.current;
+            const location = data.location;
+
+            document.getElementById('result').innerHTML = `
+                <h2>${location.name}, ${location.country}</h2>
+                <p>${weather.condition.text}</p>
+                <img src="${weather.condition.icon}" alt="${weather.condition.text}">
+                <ul>
+                    <li>Temperatura: ${weather.temp_c}°C</li>
+                    <li>Odczuwalna: ${weather.feelslike_c}°C</li>
+                    <li>Wilgotność: ${weather.humidity}%</li>
+                    <li>Ciśnienie: ${weather.pressure_mb} hPa</li>
+                    <li>Wiatr: ${weather.wind_kph} km/h (${weather.wind_dir})</li>
+                    <li>Widoczność: ${weather.vis_km} km</li>
+                    <li>UV: ${weather.uv}</li>
+                </ul>
+            `;
+        } catch (error) {
+            document.getElementById('result').innerHTML = `<p>Wystąpił błąd podczas pobierania danych: ${error.message}</p>`;
+        }
     });
     </script>
 </body>

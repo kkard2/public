@@ -19,13 +19,13 @@ Klucz należy zdobyć zakładająć konto na [weatherapi.com](https://www.weathe
 docker run -d -p 3000:3000 weather-app
 ```
 
-### c) uzyskanie informacji wygenerowanych przez serwer
+### c) Uzyskanie informacji wygenerowanych przez serwer
 ```
 docker ps
 docker exec <CONTAINER-ID> cat /app/logs/combined.log
 ```
 
-### d) sprawdzenie ile warstw posiada zbudowany obraz
+### d) Sprawdzenie ile warstw posiada zbudowany obraz
 ```
 docker history weather-app | tail -n +2 | wc -l
 ```
